@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
+        <meta name="Keywords" content="" />
+        <meta name="Description" content="" />
+        <title>请确认您的菜品</title>
+        <link href="css/style.css" rel="stylesheet" type="text/css" />
+        <script type="text/javascript" src="js/jquery-1.9.1.min.js"></script>
+        <script type="text/javascript" src="js/custom.common.js"></script>
+    </head>
+
+    <body>
+        <div class="order_box">
+            <div class="tools_bar clearfix">
+                <h2 class="hd f_l">我的菜单</h2>
+                <div class="f_r">
+                    <a href="index.html" class="add_dishes"><i></i>加菜</a>
+                    <a href="javascript:void(0);" class="clear_btn"><i></i>清空</a>
+                </div>
+            </div>
+            <form id="orderForm" action="pay_confirm.html" method="post" onSubmit="return checkOrderForm();">
+                <div class="order_goods_list">
+                    <ul>
+                        <li class="clearfix" goods-id="20" goods-price="13">
+                            <div class="img_box"><img src="images/dishes_img3.jpg" class="width_full" /></div>
+                            <div class="goods_info">
+                                <p class="title">豆鼓耗油焖排骨</p>
+                                <p class="price"><em>13</em>元/份</p>
+                                <i class="reduce_num" onclick="reduceNum(this);">-</i>
+                                <span class="goods_num">1</span>
+                                <i class="add_num" onclick="addNum(this);">+</i>
+                                <input type="hidden" name="goods_number_20" class="goods_number" value="1" />
+                            </div>
+                        </li>
+                        <li class="clearfix" goods-id="14" goods-price="18">
+                            <div class="img_box"><img src="images/dishes_img2.jpg" class="width_full" /></div>
+                            <div class="goods_info">
+                                <p class="title">香菇滑鸡</p>
+                                <p class="price"><em>18</em>元/份</p>
+                                <i class="reduce_num" onclick="reduceNum(this);">-</i>
+                                <span class="goods_num">1</span>
+                                <i class="add_num" onclick="addNum(this);">+</i>
+                                <input type="hidden" name="goods_number_14" class="goods_number" value="1" />
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+                <div class="pay_box">
+                    <dl class="desk_number clearfix">
+                        <dt>用餐台号</dt>
+                        <dd>
+                            <select id="desk_number_sl" name="">
+                                <option value="0">请选择台号...</option>
+                                <option value="1">1号台</option>
+                                <option value="2">2号台</option>
+                                <option value="3">3号台</option>
+                                <option value="4">4号台</option>
+                                <option value="5">5号台</option>
+                                <option value="6">6号台</option>
+                                <option value="7">7号台</option>
+                                <option value="8">8号台</option>
+                                <option value="9">9号台</option>
+                                <option value="10">10号台</option>
+                            </select>
+                        </dd>
+                    </dl>
+                    <dl class="payment clearfix">
+                        <dt>支付方式</dt>
+                        <dd>
+                            <div class="payment_item" onClick="changeAttr(this);"><span>√</span>微信支付<input type="radio" name="pay_id" value="1" class="none" /></div>
+                            <div class="payment_item" onClick="changeAttr(this);"><span>√</span>餐后支付<input type="radio" name="pay_id" value="2" class="none" /></div>
+                        </dd>
+                    </dl>
+                    <div class="order_total">总计：<em>366</em>元</div>
+                    <input type="submit" value="提 交" class="sm_btn" />
+                </div>
+                <input type="hidden" name="order_total" class="order_total_input" value="366" />
+            </form>
+        </div>
+		<script type="text/javascript">		
+		    function reduceNum(obj){
+				var _li = $(obj).parent().parent();
+				var num = $(obj).next().text();
+				var price = _li.attr("goods-price");
+				var total = $(".order_total em").text() - price;
+				if(num > 1){
+					$(obj).next().text(num - 1);
+					$(obj).parent().find(".goods_number").val(num - 1);
+					$(".order_total em").text(total);
+					$(".order_total_input").val(total);
+				}
+				else {
+					if(confirm("确定要删除该菜品吗？")){
+						$(".order_total em").text(total);
+						$(".order_total_input").val(total);
+						_li.slideUp(500, function(){
+							$(this).remove();
+							if($(".order_goods_list li").length == 0){
+								$(".order_goods_list,.pay_box").remove();
+								$(".order_box").append('<div class="no_results">您还没有选择菜品</div>');
+							}
+						});
+					}
+				}
+			}
+		    function addNum(obj){
+				var _li = $(obj).parent().parent();
+				var num = Number($(obj).prev().text());
+				var price = Number(_li.attr("goods-price"));
+				var total = Number($(".order_total em").text()) + price;
+				$(obj).prev().text(num + 1);
+				$(obj).parent().find(".goods_number").val(num + 1);
+				$(".order_total em").text(total);
+				$(".order_total_input").val(total);
+			}
+			function changeAttr(t){
+				$(t).addClass("selected").siblings().removeClass("selected");
+				$(t).find("input")[0].checked='checked';
+			}
+			function checkOrderForm(){
+				if($("#desk_number_sl")[0].value == 0){
+					alert("请选择用餐台号");
+					return false;
+				}
+				if(!$(".payment input:checked")[0]){
+					alert("请选择支付方式");
+					return false;
+				}
+			}
+			
+		    $(function(){
+				$(".clear_btn").bind("click", function(){
+					if(confirm("确定要删除所有菜品吗？")){
+						$.ajax({
+							url: '{url app=store}',
+							type: 'post',
+							success: function(res) {
+								if(res == 1){
+									$(".order_goods_list,.pay_box").remove();
+									$(".order_box").append('<div class="no_results">您还没有选择菜品</div>');
+								}
+							}
+						});
+					}
+				});
+			});
+        </script>
+    </body>
+</html>

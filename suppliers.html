@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
+        <meta name="Keywords" content="" />
+        <meta name="Description" content="" />
+        <title>请选择餐厅</title>
+        <link href="css/style.css" rel="stylesheet" type="text/css" />
+        <script type="text/javascript" src="js/jquery-1.9.1.min.js"></script>
+    </head>
+
+    <body>
+        <div class="restaurant_list">
+            <ul>
+                <li class="restaurant_item" store-id="1">
+                    <div class="name">白石洲湖南大碗菜</div>
+                    <div class="address">深圳罗湖区人民南路国贸天虹2楼梦乐园美食城208号铺</div>
+                    <div class="entrance">进去点餐</div>
+                </li>
+                <li class="restaurant_item" store-id="2">
+                    <div class="name">饴家</div>
+                    <div class="address">深圳罗湖区人民南路国贸天虹2楼梦乐园美食城103号铺</div>
+                    <div class="entrance">进去点餐</div>
+                </li>
+            </ul>
+        </div>
+        <script type="text/javascript">
+            $(".restaurant_item").bind("click", function(){
+				var url = "http://mall.minyihui.com/store/" + $(this).attr("store-id");
+				location.href = url;
+			});
+        </script>
+    </body>
+</html>

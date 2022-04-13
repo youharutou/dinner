@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
+        <meta name="Keywords" content="" />
+        <meta name="Description" content="" />
+        <title>成功生成订单</title>
+        <link href="css/style.css" rel="stylesheet" type="text/css" />
+        <script type="text/javascript" src="js/jquery-1.9.1.min.js"></script>
+        <style type="text/css">
+            body,html {background-color: #eee; font-size: 14px;}
+        </style>
+    </head>
+
+    <body>
+        <div class="order_completed">
+            <h2 class="hd"><i></i>订单提交成功</h2>
+            <div class="order_detail">
+                <dl class="order_amount clearfix">
+                    <dt>付款金额</dt>
+                    <dd>¥366</dd>
+                </dl>
+                <dl class="clearfix">
+                    <dt>支付状态</dt>
+                    <dd>已支付</dd>
+                </dl>
+                <dl class="clearfix">
+                    <dt>支付方式</dt>
+                    <dd>微信支付</dd>
+                </dl>
+                <dl class="clearfix">
+                    <dt>订单号</dt>
+                    <dd>1002412500124</dd>
+                </dl>
+                <dl class="clearfix">
+                    <dt>下单时间</dt>
+                    <dd>2015-03-13 12:36:08</dd>
+                </dl>
+                <div class="goods_list_detail">
+                    <a href="javascript:void(0);" class="show_handle">商品列表<b class="triangle"></b></a>
+                    <div id="goods_list" class="hidden_layer">
+                        <table>
+                            <tr>
+                                <td>豆鼓耗油焖排骨</td>
+                                <td>13元/份</td>
+                                <td>2份</td>
+                            </tr>
+                            <tr>
+                                <td>香菇滑鸡</td>
+                                <td>18元/份</td>
+                                <td>1份</td>
+                            </tr>
+                            <tr>
+                                <td>花旗参乌鸡汤</td>
+                                <td>12元/份</td>
+                                <td>1份</td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+		<script type="text/javascript">					
+		    $(function(){
+				$(".show_handle").bind("click", function(){
+					$("#goods_list").slideToggle(500);
+					$("b", this).toggleClass("reverse");
+				});
+			});
+        </script>
+    </body>
+</html>

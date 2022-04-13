@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
+        <meta name="Keywords" content="" />
+        <meta name="Description" content="" />
+        <title>点餐系统</title>
+        <link href="css/style.css" rel="stylesheet" type="text/css" />
+        <script type="text/javascript" src="js/jquery-1.9.1.min.js"></script>
+        <script type="text/javascript" src="js/custom.common.js"></script>
+    </head>
+
+    <body>
+        <section class="xsm_part clearfix">
+            <div class="y_cat_menu">
+                <ul id="float_cat">
+                    <li class='current' style="border-top: none"><a href='javascript:void(0)' class='gcate_link' cat-id='1'>家常小炒</a><b class="triangle"></b></li>
+                    <li><a href='javascript:void(0)' class='gcate_link' cat-id='2'>原盅炖汤</a><b class="triangle"></b></li>
+                    <li><a href='javascript:void(0)' class='gcate_link' cat-id='3'>炒饭粉面</a><b class="triangle"></b></li>
+                    <li><a href='javascript:void(0)' class='gcate_link' cat-id='4'>豆制品类</a><b class="triangle"></b></li>
+                    <li><a href='javascript:void(0)' class='gcate_link' cat-id='5'>酒水饮料</a><b class="triangle"></b></li>
+                    <li><a href='javascript:void(0)' class='gcate_link' cat-id='6'>凉拌类</a><b class="triangle"></b></li>
+                </ul>
+            </div>
+            <div class="cate_goods_list">
+                <div class="scroll_list clearfix">
+                    <div class="scroll_item">
+                        <dl class="xsm_vege_item clearfix" goods-id="10" goods-price="14">
+                            <dt>
+                                <img src="images/dishes_img1.jpg" class="width_full" />
+                            </dt>
+                            <dd>
+                                <p class="title">香菇滑鸡1</p>
+                                <p class="price"><em>14</em>元/份</p>
+                                <div class="select_ico">√</div>
+                            </dd>
+                        </dl>
+                    </div>
+                    <div class="scroll_item">
+                        <dl class="xsm_vege_item clearfix" goods-id="20" goods-price="18">
+                            <dt>
+                                <img src="images/dishes_img2.jpg" class="width_full" />
+                            </dt>
+                            <dd>
+                                <p class="title">香菇滑鸡2</p>
+                                <p class="price"><em>18</em>元/份</p>
+                                <div class="select_ico">√</div>
+                            </dd>
+                        </dl>
+                    </div>
+                    <div class="scroll_item">
+                        <dl class="xsm_vege_item clearfix" goods-id="30" goods-price="13">
+                            <dt>
+                                <img src="images/dishes_img3.jpg" class="width_full" />
+                            </dt>
+                            <dd>
+                                <p class="title">豆鼓耗油焖排骨</p>
+                                <p class="price"><em>13</em>元/份</p>
+                                <div class="select_ico">√</div>
+                            </dd>
+                        </dl>
+                    </div>
+                </div>
+                <div class="scroll_list clearfix none"></div>
+                <div class="scroll_list clearfix none"></div>
+                <div class="scroll_list clearfix none"></div>
+                <div class="scroll_list clearfix none"></div>
+                <div class="scroll_list clearfix none"></div>
+            </div>
+            <div class="bottom_bar">
+                <span class="price_total">共计<em>0</em>元</span>
+                <a href="order.html">我的菜单</a>
+            </div>
+        </section>
+		<script type="text/javascript">
+		    function updateDishesNum(){
+				var num = 0;
+				$("#float_cat span").each(function(){
+					num += Number($(this).text());
+				});
+				if(num > 0){
+					$(".bottom_bar a span")[0] ? $(".bottom_bar a span").text(num) : $(".bottom_bar a").append("<span>" + num + "</span>");
+					return;
+				} 
+				$(".bottom_bar a span").remove();
+			}
+			function updateTotal(){
+				var total = 0;
+				$(".scroll_list .selected").each(function(){
+					total += Number($(this).attr("goods-price"));
+				});
+				$(".price_total em").text(total);
+				return total;
+			}
+			function saveDishes(total, cat_id, goods_id){
+				$.ajax({
+					url: '{url app=store}',
+					type: 'post',
+					data: {ajax: 2, total: total, cat_id: cat_id, goods_id: goods_id},
+					success: function(data) {
+						
+					}
+				});
+			}
+			
+		    $(function(){
+				updateDishesNum();
+				$(".gcate_link").bind("click", function() {
+					if(!$(this).parent().hasClass("current")){
+						var cate_id = $(this).attr('cat-id');
+						var cur_scroll_list = $(".scroll_list").eq($(".gcate_link").index(this));
+						$(this).parent().addClass('current').siblings().removeClass('current');
+						cur_scroll_list.show().siblings().hide();
+						if(cur_scroll_list.find(".scroll_item").length > 0) return;
+						cur_scroll_list.html('<div class="loading_box"><i class="loading_ico"></i></div>');
+						setTimeout(function(){
+							$.ajax({
+								url: '{url app=store}',
+								type: 'post',
+								data: {ajax: 1, cate_id:  cate_id},
+								success: function(data) {
+									if(!data){
+										cur_scroll_list.html('<div class="no_results">该分类下没有菜品</div>');
+									}
+									else {
+										cur_scroll_list.html(data);
+									}
+								}
+							});
+						} , 500);
+					}
+				});
+				$(".scroll_list").on("click", ".xsm_vege_item", function(){
+					var _span = $("#float_cat .current").find("span");
+					var c_id = $("#float_cat .current").find(".gcate_link").attr("cat-id");
+					var g_id = $(this).attr("goods-id");
+					if($(this).hasClass("selected")){
+						$(this).removeClass("selected");
+						_span.text() == "1" ? _span.remove() : _span.text(Number(_span.text()) - 1);
+					}
+					else {
+						$(this).addClass("selected");
+						_span[0] ? _span.text(Number(_span.text()) + 1) : $("#float_cat .current").append("<span>1</span>");
+					}
+					updateDishesNum();
+					saveDishes(updateTotal(), c_id, g_id);
+				});
+			});
+        </script>
+    </body>
+</html>

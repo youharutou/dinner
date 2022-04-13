@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
+        <meta name="Keywords" content="" />
+        <meta name="Description" content="" />
+        <title>订单确认</title>
+        <link href="css/style.css" rel="stylesheet" type="text/css" />
+        <style type="text/css">
+            body,html {font-size: 14px;}
+        </style>
+    </head>
+
+    <body>
+        <div class="order_confirm">
+            <h2 class="hd"><a href="order.html"><i></i></a>确认订单</h2>
+            <div class="bd">
+                <!--<div class="shd">确认订单</div>-->
+                <div class="confirm_item confirm_desk_number">用餐台号：<span>3</span>号台</div>
+                <div class="confirm_item goods_list_table">
+                    <div class="shd">商品列表</div>
+                    <div class="sbd">
+                        <table>
+                            <tr>
+                                <td>香菇滑鸡</td>
+                                <td>15元/份</td>
+                                <td>3份</td>
+                            </tr>
+                            <tr>
+                                <td>清蒸排骨</td>
+                                <td>12元/份</td>
+                                <td>1份</td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+                <div class="confirm_order_total">应付款金额：<em>¥18.00</em></div>
+                <div class="pay_btn" onClick="callpay()">立即用微信支付</div>
+            </div>
+        </div>
+    </body>
+</html>
